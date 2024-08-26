@@ -3,6 +3,8 @@ import string
 from datetime import datetime
 from random import *
 from time import sleep
+import requests
+import json
 
 
 def generate_attribute_value(length=10):
@@ -28,3 +30,21 @@ def wait_for_time(time: int):
     :param time: seconds of the required wait duration, the format must be integer
     """
     sleep(time)
+
+
+def send_post_request(endpoint, headers, json):
+    """
+    sends a post request to the given endpoint
+    :param endpoint: the endpoint that will the post request sent
+    :param headers: headers of the request
+    :param json: payload of the request
+    """
+    return requests.post(endpoint, headers, json)
+
+
+def get_response_body(response):
+    """
+    returns response body
+    :param response: the response value that is set after sending the post request
+    """
+    return json.loads(response.content)

@@ -1,7 +1,3 @@
-import json
-
-import pytest
-import requests
 from utils.setup import *
 
 
@@ -31,13 +27,13 @@ def test_attribute_v2_update_with_iid():
             }
         ]
     }
-    response_attribute_v2_update = requests.post(UCD_ENDPOINT + ENDPOINTS.ATTRIBUTE_V2_UPDATE, headers=HEADERS,
-                                                 json=valid_attribute_update_payload)
+    response_attribute_v2_update = send_post_request(UCD_ENDPOINT + ENDPOINTS.ATTRIBUTE_V2_UPDATE, headers=HEADERS,
+                                                     json=valid_attribute_update_payload)
     wait_for_time(2)
 
     print("2. Verify that the API returns a 200 OK status code and '{}'.")
     assert response_attribute_v2_update.status_code == 200
-    assert json.loads(response_attribute_v2_update.content) == {}
+    assert get_response_body(response_attribute_v2_update) == {}
 
     print("3. Check that via Contact the newly created attribute exists in the system")
     contact_api_payload = {
@@ -50,10 +46,10 @@ def test_attribute_v2_update_with_iid():
             "su"
         ]
     }
-    response_contact_api_payload = requests.post(UCD_ENDPOINT + ENDPOINTS.CONTACT_API, headers=HEADERS,
-                                                 json=contact_api_payload)
+    response_contact_api_payload = send_post_request(UCD_ENDPOINT + ENDPOINTS.CONTACT_API, headers=HEADERS,
+                                                     json=contact_api_payload)
     wait_for_time(2)
-    response_contact_api_payload_body = json.loads(response_contact_api_payload.content)
+    response_contact_api_payload_body = get_response_body(response_contact_api_payload)
     assert response_contact_api_payload.status_code == 200
     assert response_contact_api_payload_body.attributes == {"su": attribute_value}
 
@@ -94,9 +90,9 @@ def test_attribute_v2_update_with_iid():
             ]
         }
     }
-    vertical_api_response = requests.post(UCD_ENDPOINT + ENDPOINTS.VERTICAL_API, headers=HEADERS,
-                                          json=vertical_api_payload)
+    vertical_api_response = send_post_request(UCD_ENDPOINT + ENDPOINTS.VERTICAL_API, headers=HEADERS,
+                                              json=vertical_api_payload)
     wait_for_time(2)
-    vertical_api_response_body = json.loads(vertical_api_response.content)
+    vertical_api_response_body = get_response_body(vertical_api_response)
     assert vertical_api_response.status_code == 200
     assert vertical_api_response_body["count"] == 1
