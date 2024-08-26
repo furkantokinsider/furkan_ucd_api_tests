@@ -1,7 +1,5 @@
-import random
-import string
 from datetime import datetime
-from random import *
+import random
 from time import sleep
 import requests
 import json
@@ -12,7 +10,9 @@ def generate_attribute_value(length=10):
     returns a random attribute value with the given length in string format
     :param length: the length of the required attribute
     """
-    attribute_value = ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
+    lowercase_ascii_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                               'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    attribute_value = ''.join(random.choice(lowercase_ascii_letters) for _ in range(length))
     return attribute_value
 
 
