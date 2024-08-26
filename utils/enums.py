@@ -11,4 +11,4 @@ HEADERS = {
 class ENDPOINTS:
     ATTRIBUTE_V2_UPDATE = "/attribute/v2/update"
     CONTACT_API = "/contact/v1/profile"
-    VERTICAL_API = "/vertical/v1/profile"
+    VERTICAL_API = "/vertical/v2/get"

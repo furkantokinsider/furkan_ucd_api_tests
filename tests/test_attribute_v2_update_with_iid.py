@@ -29,6 +29,7 @@ def test_attribute_v2_update_with_iid():
     }
     response_attribute_v2_update = send_post_request(UCD_ENDPOINT + ENDPOINTS.ATTRIBUTE_V2_UPDATE, headers=HEADERS,
                                                      json=valid_attribute_update_payload)
+    print(response_attribute_v2_update)
     wait_for_time(2)
 
     print("2. Verify that the API returns a 200 OK status code and '{}'.")
@@ -37,11 +38,11 @@ def test_attribute_v2_update_with_iid():
 
     print("3. Check that via Contact the newly created attribute exists in the system")
     contact_api_payload = {
-        "partner": test_partner,
+        "partner": {f"test_partner"},
         "sources": [
             "web"
         ],
-        "insider_id": insider_id,
+        "insider_id": {f"insider_id"},
         "attributes": [
             "su"
         ]
@@ -55,10 +56,10 @@ def test_attribute_v2_update_with_iid():
 
     print("4. Check that via Vertical API the newly created attribute exists in the system.")
     vertical_api_payload = {
-        "partner": f"{test_partner}",
+        "partner": {f"test_partner"},
         "count_only": True,
         "sources": [
-            "last"
+            "web"
         ],
         "columns": [
             "iid"
@@ -73,14 +74,14 @@ def test_attribute_v2_update_with_iid():
                                     "key": "su",
                                     "operator": "eq",
                                     "values": [
-                                        attribute_value
+                                        {f"attribute_value"}
                                     ]
                                 },
                                 {
                                     "key": "iid",
                                     "operator": "eq",
                                     "values": [
-                                        insider_id
+                                        {f"insider_id"}
                                     ]
                                 }
                             ]
