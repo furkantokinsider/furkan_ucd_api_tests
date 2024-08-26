@@ -27,36 +27,38 @@ def test_attribute_v2_update_with_iid():
             }
         ]
     }
-    response_attribute_v2_update = send_post_request(UCD_ENDPOINT + ENDPOINTS.ATTRIBUTE_V2_UPDATE, headers=HEADERS,
+    response_attribute_v2_update = requests.post(UCD_ENDPOINT + ENDPOINTS.ATTRIBUTE_V2_UPDATE, headers=HEADERS,
                                                      json=valid_attribute_update_payload)
-    print(response_attribute_v2_update)
-    wait_for_time(2)
+    wait_for_time(10)
+    print("Request is successfully sent to '/attribute/v2/update' endpoint with valid attribute data!")
 
     print("2. Verify that the API returns a 200 OK status code and '{}'.")
     assert response_attribute_v2_update.status_code == 200
     assert get_response_body(response_attribute_v2_update) == {}
+    print("API returned 200 OK and the body content is equal to '{}'!")
 
     print("3. Check that via Contact the newly created attribute exists in the system")
     contact_api_payload = {
-        "partner": {f"test_partner"},
+        "partner": test_partner,
         "sources": [
             "web"
         ],
-        "insider_id": {f"insider_id"},
+        "insider_id": insider_id,
         "attributes": [
             "su"
         ]
     }
-    response_contact_api_payload = send_post_request(UCD_ENDPOINT + ENDPOINTS.CONTACT_API, headers=HEADERS,
+    response_contact_api_payload = requests.post(UCD_ENDPOINT + ENDPOINTS.CONTACT_API, headers=HEADERS,
                                                      json=contact_api_payload)
-    wait_for_time(2)
+    wait_for_time(10)
     response_contact_api_payload_body = get_response_body(response_contact_api_payload)
     assert response_contact_api_payload.status_code == 200
-    assert response_contact_api_payload_body.attributes == {"su": attribute_value}
+    assert response_contact_api_payload_body["attributes"] == {"su": attribute_value}
+    print("Contact API request status code is 200 and attribute object has the necessary value!")
 
     print("4. Check that via Vertical API the newly created attribute exists in the system.")
     vertical_api_payload = {
-        "partner": {f"test_partner"},
+        "partner": test_partner,
         "count_only": True,
         "sources": [
             "web"
@@ -74,14 +76,14 @@ def test_attribute_v2_update_with_iid():
                                     "key": "su",
                                     "operator": "eq",
                                     "values": [
-                                        {f"attribute_value"}
+                                        attribute_value
                                     ]
                                 },
                                 {
                                     "key": "iid",
                                     "operator": "eq",
                                     "values": [
-                                        {f"insider_id"}
+                                        insider_id
                                     ]
                                 }
                             ]
@@ -91,9 +93,10 @@ def test_attribute_v2_update_with_iid():
             ]
         }
     }
-    vertical_api_response = send_post_request(UCD_ENDPOINT + ENDPOINTS.VERTICAL_API, headers=HEADERS,
+    vertical_api_response = requests.post(UCD_ENDPOINT + ENDPOINTS.VERTICAL_API, headers=HEADERS,
                                               json=vertical_api_payload)
-    wait_for_time(2)
+    wait_for_time(10)
     vertical_api_response_body = get_response_body(vertical_api_response)
     assert vertical_api_response.status_code == 200
     assert vertical_api_response_body["count"] == 1
+    print("Vertical API endpoint status code is 200 and count returns '1' as expected!")
