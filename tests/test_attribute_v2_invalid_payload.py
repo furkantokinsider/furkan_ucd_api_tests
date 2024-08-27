@@ -5,7 +5,7 @@ from utils.setup import *
 def test_attribute_v2_invalid_payload():
     """
     Test case is: verify that a new attribute can be successfully created
-        1. Send a POST request to the /attribute/v2/update endpoint with an integer surname
+        1. S1. Send a POST request to the /attribute/v2/update endpoint with an empty user object
         2. Verify that the API returns a 400 Bad Request status code.
         3. Check that the error message contains details about the validation failure.
     """
